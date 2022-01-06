@@ -1,0 +1,4 @@
+Tipps:
+1. The background of the marker needs to be (244,244,244)
+2. Create a png with gimp
+3. Create marker with https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html
