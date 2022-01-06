@@ -20,16 +20,20 @@ const mapping_robo = {"hallo":'Wave',"bye":'ThumbsUp',"tschüss":'ThumbsUp',"sit
 
 
 function fillSelectMenu(){
-    var select = document.getElementById("selectMenu");
-    var options = Object.keys(mapping_robo)
+    const select = document.getElementById("selectMenu");
+    if (select.childElementCount<2){
 
-    for(var i = 0; i < options.length; i++) {
-        var opt = options[i];
-        var el = document.createElement("option");
-        el.textContent = opt;
-        el.value = opt;
-        select.appendChild(el);
-}
+        var options = Object.keys(mapping_robo)
+
+        for(var i = 0; i < options.length; i++) {
+            var opt = options[i];
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+    }
+
 }
 
 
