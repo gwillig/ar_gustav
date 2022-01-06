@@ -20,6 +20,7 @@
     <button type="button"  onclick="startSpeech()" id="startSpeech" class="btn btn-primary">Talk</button>
 </div>
 <a-scene embedded
+         renderer="logarithmicDepthBuffer: true;"
          arjs='sourceType: webcam; patternRatio: 0.5 trackingMethod: best maxDetectionRate: 3 detectionMode: mono'
          renderer='antialias: true; alpha: true; precision: medium;'
          smooth="true"
@@ -32,10 +33,12 @@
         <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
 
         <a-entity id="ar_object"
-                  crossFadeDuration:=" 1"
+                   crossFadeDuration:=" 1"
                    position="0 0 -3"
-                  scale="0.5 0.5 0.5"
-                  gltf-model="src: url(models/RobotExpressive.glb);">
+                   scale="0.5 0.5 0.5"
+                  gltf-model="src: url(models/RobotExpressive.glb);"
+                  animation-mixer="clip: Idle;loop: repeat;"
+        >
         </a-entity>
 
     </a-marker>
