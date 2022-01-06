@@ -16,6 +16,23 @@ const states = ['Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Stan
 const emotes = ['Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp'];
 const mapping_robo = {"hallo":'Wave',"bye":'ThumbsUp',"tschüss":'ThumbsUp',"sitzen":"Sitting","stehen":"Standing",
                   "tanze":'Dance', "rennen":"running","spring":"Jump","ja":"Yes","böse robert":"Punch"}
+
+
+
+function fillSelectMenu(){
+    var select = document.getElementById("selectMenu");
+    var options = Object.keys(mapping_robo)
+
+    for(var i = 0; i < options.length; i++) {
+        var opt = options[i];
+        var el = document.createElement("option");
+        el.textContent = opt;
+        el.value = opt;
+        select.appendChild(el);
+}
+}
+
+
 const mapping_robo_keys = Object.keys(mapping_robo)
 var grammar = '#JSGF V1.0; grammar words; public <words> = ' + mapping_robo_keys.join(' | ') + ' ;'
 speechRecognitionList.addFromString(grammar, 1);
