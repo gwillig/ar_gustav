@@ -15,7 +15,7 @@ var speechRecognitionList = new SpeechGrammarList();
 const states = ['Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing'];
 const emotes = ['Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp'];
 const mapping_robo = {"hallo":'Wave',"bye":'ThumbsUp',"tschüss":'ThumbsUp',"sitzen":"Sitting","stehen":"Standing",
-                  "tanze":'Dance', "rennen":"running","spring":"Jump","ja":"Yes","böse robert":"Punch"}
+                  "tanze":'Dance', "rennen":"Running","spring":"Jump","ja":"Yes","böse":"Punch"}
 
 
 
@@ -72,8 +72,10 @@ recognition.onresult = function(event) {
     // We then return the transcript property of the SpeechRecognitionAlternative object
     var wordRaw = event.results[0][0].transcript;
     const word =  wordRaw.toLowerCase();
+    const confidence = Math.round(event.results[0][0].confidence*100);
 
     console.log('Confidence: '+word+": " + event.results[0][0].confidence);
+    document.querySelector("#recoSpeech").textContent=`${word}: ${confidence} % `
     let result = mapping_robo[word]
     if (mapping_robo[word]==undefined){
         result = 'No'
@@ -102,8 +104,11 @@ function nextAnimation(state) {
 
      model.setAttribute('animation-mixer', {
         clip:state,
-        loop: 'once',
-        crossFadeDuration: 0.4,
+        loop: "repeat",
+        repetitions:3,
+        timeScale:0.8,
+        crossFadeDuration: 0.4
+
       });
 
 }
