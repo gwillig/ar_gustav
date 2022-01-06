@@ -11,6 +11,11 @@
     text-align: center;
 
 }
+#selectMenu{
+    display: inline-block;
+    width: 60%;
+}
+
 
 
 .blink_btn {

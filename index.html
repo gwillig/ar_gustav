@@ -14,21 +14,24 @@
 </header>
 <body onload="fillSelectMenu()">
 <div id="nextbutton">
-    <select class="custom-select" id="selectMenu">
+    <select class="form-select" id="selectMenu">
     </select>
     <button type="button"  onclick="startSpeech()" id="startSpeech" class="btn btn-primary">Talk</button>
 </div>
 <a-scene embedded
          arjs='sourceType: webcam; patternRatio: 0.5 trackingMethod: best maxDetectionRate: 3 detectionMode: mono'
          renderer='antialias: true; alpha: true; precision: medium;'
-         vr-mode-ui="enabled: false">
+         smooth="true"
+         vr-mode-ui="enabled: false"
+         arjs>
     <a-marker preset='custom' type='pattern' url='marker/pattern-g.patt'
                      smoothCount=0 smoothTolerance=0.00001 emitevents="true">
 
         <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
 
-        <a-entity position="0 1 0" id="ar_object"
+        <a-entity id="ar_object"
                   crossFadeDuration:=" 0.4"
+                   position="0 0 -3"
                   scale="0.5 0.5 0.5"
                   gltf-model="src: url(models/RobotExpressive.glb);">
         </a-entity>
