@@ -13,6 +13,7 @@
     <script src="speech.js"></script>
 </header>
 <body onload="fillSelectMenu()">
+<h2 id="recoSpeech"></h2>
 <div id="nextbutton">
     <select class="form-select" id="selectMenu">
     </select>
@@ -22,6 +23,7 @@
          arjs='sourceType: webcam; patternRatio: 0.5 trackingMethod: best maxDetectionRate: 3 detectionMode: mono'
          renderer='antialias: true; alpha: true; precision: medium;'
          smooth="true"
+
          vr-mode-ui="enabled: false"
          arjs>
     <a-marker preset='custom' type='pattern' url='marker/pattern-g.patt'
@@ -30,11 +32,12 @@
         <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
 
         <a-entity id="ar_object"
-                  crossFadeDuration:=" 0.4"
+                  crossFadeDuration:=" 1"
                    position="0 0 -3"
                   scale="0.5 0.5 0.5"
                   gltf-model="src: url(models/RobotExpressive.glb);">
         </a-entity>
+
     </a-marker>
 </a-scene>
 </body>
