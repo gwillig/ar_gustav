@@ -15,10 +15,11 @@
 <body onload="fillSelectMenu()">
 <h2 id="recoSpeech"></h2>
 <div id="nextbutton">
-    <select class="form-select" id="selectMenu">
+    <select class="form-select" id="selectMenu" onchange="onSelect(this.value)">
     </select>
     <button type="button"  onclick="startSpeech()" id="startSpeech" class="btn btn-primary">Talk</button>
 </div>
+
 <a-scene embedded
          renderer="logarithmicDepthBuffer: true;"
          arjs='sourceType: webcam; patternRatio: 0.5 trackingMethod: best maxDetectionRate: 3 detectionMode: mono'
@@ -32,14 +33,23 @@
 
         <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
 
-        <a-entity id="ar_object"
-                   crossFadeDuration:=" 1"
-                   position="0 0 -3"
-                   scale="0.5 0.5 0.5"
-                  gltf-model="src: url(models/RobotExpressive.glb);"
-                  animation-mixer="clip: Idle;loop: repeat;"
-        >
-        </a-entity>
+  <a-entity
+    id="robot"
+    class="cantap"
+    gltf-model="src: url(models/RobotExpressive.glb)"
+    gltf-morph="morphtarget: Sad; value:1"
+    animation-mixer="clip: idle; loop: repeat; crossFadeDuration: 0.4"
+    animation="
+      property: gltf-morph.value;
+      from: 0;
+      to: 0;
+      loop: once;
+      dir: alternate;
+      easing: easeInOutQuad;"
+    position="0 0 -2"
+    scale="0.5 0.5 0.5"
+    shadow>
+  </a-entity>
 
     </a-marker>
 </a-scene>

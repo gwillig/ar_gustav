@@ -15,7 +15,7 @@ var speechRecognitionList = new SpeechGrammarList();
 const states = ['Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing'];
 const emotes = ['Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp'];
 const mapping_robo = {"hallo":'Wave',"bye":'ThumbsUp',"tschüss":'ThumbsUp',"sitzen":"Sitting","stehen":"Standing",
-                  "tanze":'Dance', "rennen":"Running","spring":"Jump","ja":"Yes","böse":"Punch"}
+                  "tanze":'Dance', "rennen":"Running","spring":"Jump","ja":"Yes","böse":"Punch","no":"No"}
 
 
 
@@ -76,12 +76,33 @@ recognition.onresult = function(event) {
 
     console.log('Confidence: '+word+": " + event.results[0][0].confidence);
     document.querySelector("#recoSpeech").textContent=`${word}: ${confidence} % `
-    let result = mapping_robo[word]
-    if (mapping_robo[word]==undefined){
-        result = 'No'
+    let animation = mapping_robo[word]
+    let emotion = {"morphtarget": "Sad", "value":0}
+    let repetitions=3
+
+    var vorstellen = ['vorstellen',"vorstellt","verstellen"];
+    var goodbye=["tschüss","bye","gut"]
+    var no = ["böse","sauer","gehen"]
+
+    if (new RegExp(no.join('|')).test(word)){
+        repetitions=1
+        animation=mapping_robo["no"]
+        emotion = {"morphtarget": "Sad", "value":2}
+    }
+   else if(new RegExp(vorstellen.join('|')).test(word)){
+          animation=mapping_robo["ja"]
+
+          emotion = {"morphtarget": "Surpise", "value":2}
+    }
+    else if(new RegExp(goodbye.join('|')).test(word)){
+          animation=mapping_robo["tschüss"]
+    }
+    else {
+        //If no word has been detected he will shake his head
+        animation = 'No'
     }
 
-    nextAnimation(result)
+    nextAnimation(animation,emotion,repetitions)
 
 }
 
@@ -99,21 +120,56 @@ recognition.onerror = function(event) {
   console.log('Error occurred in recognition: ' + event.error)
 }
 
-function nextAnimation(state) {
-    const model = document.getElementById('ar_object');
+function nextAnimation(animation,emotion,repetitions) {
+    const model = document.getElementById('robot');
 
      model.setAttribute('animation-mixer', {
-        clip:state,
+        clip:animation,
         loop: "repeat",
-        repetitions:3,
+        repetitions:repetitions,
         timeScale:0.8,
         crossFadeDuration: 0.4
 
       });
-
+    model.setAttribute("gltf-morph",emotion)
 }
 
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+
+function onSelect(e){
+     nextAnimation(mapping_robo[e])
+
+
+}
+
+
+//https://www.8thwall.com/8thwall/morph-targets-aframe/code/body.html
+const gltfMorphComponent = {
+  multiple: true,
+  schema: {
+    morphtarget: {type: 'string', default: ''},
+    value: {type: 'number', default: 0},
+  },
+  init() {
+    this.el.addEventListener('object3dset', () => {
+      this.morpher()
+    })
+  },
+  update() {
+    this.morpher()
+  },
+  morpher() {
+    const mesh = this.el.object3D
+    mesh.traverse((o) => {
+      if (o.morphTargetInfluences && o.userData.targetNames) {
+        const pos = o.userData.targetNames.indexOf(this.data.morphtarget)
+        o.morphTargetInfluences[pos] = this.data.value
+      }
+    })
+  },
+}
+AFRAME.registerComponent('gltf-morph', gltfMorphComponent)
